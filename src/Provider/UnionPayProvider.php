@@ -19,8 +19,8 @@ class UnionPayProvider implements Provider
      */
     public function serviceProvider(Container $container): void
     {
-        $container['mini'] = function ($container) {
-            return new MiniPayShortcut($container, '/wx/');
+        $container['wechatMini'] = function ($container) {
+            return new MiniPayShortcut($container, '/wx/unified-order');
         };
     }
 }

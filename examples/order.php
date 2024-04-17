@@ -38,7 +38,7 @@ $payClient->setAppKey($appSecret);
 
 
 // 下单
-// $response = $payClient->mini->createOrder($param);
+$response = $payClient->wechatMini->createOrder($param);
 
 //订单详情
 $param = [
@@ -55,7 +55,7 @@ $param = [
     'refundDesc'=>'退款原因', //退款原因
 ];
 
-$response = $payClient->refund->refund($param);
+// $response = $payClient->refund->refund($param);
 
 //物流查询
 //$param = [];

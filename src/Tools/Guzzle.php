@@ -4,10 +4,13 @@ namespace UnionPay\Api\Tools;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\HandlerStack;
 use Hyperf\Codec\Json;
 use Hyperf\Guzzle\CoroutineHandler;
 use Psr\Http\Message\ResponseInterface;
+use UnionPay\Api\Constants\UnionErrorCode;
+use UnionPay\Api\Exception\PayException;
 
 class Guzzle
 {
@@ -25,7 +28,7 @@ class Guzzle
     {
         $options['handler'] = HandlerStack::create(new CoroutineHandler());
 
-        $options['headers'] = $this->headers;
+        $options['headers'] = array_merge($this->headers, $options['headers']);
 
         $this->client = new Client($options);
 
@@ -50,7 +53,7 @@ class Guzzle
      */
     public function sendPost(string $url, array $params): array
     {
-         logger('mideapay')->info('MideaPay POST', ['url' => $url, 'params' => $params]);
+         logger('unionpay')->info('UnionPay POST', ['url' => $url, 'params' => $params]);
 
         $result = $this->client->post($url, ['json' => $params]);
 
@@ -65,7 +68,15 @@ class Guzzle
     {
         $result = $response->getBody()->getContents();
 
-        return Json::decode($result, true);
+        logger('unionpay')->info('UnionPay RESULT', Json::decode($result));
+
+        $result = Json::decode($result);
+
+        if (!is_array($result)) {
+            throw new PayException(UnionErrorCode::SERVER_ERROR,'UnionPay response error');
+        }
+
+        return $result;
     }
 
 }

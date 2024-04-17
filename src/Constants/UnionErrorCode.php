@@ -16,7 +16,7 @@ use Hyperf\Constants\AbstractConstants;
 use Hyperf\Constants\Annotation\Constants;
 
 #[Constants]
-class MideaErrorCode extends AbstractConstants
+class UnionErrorCode extends AbstractConstants
 {
 
     public const SERVER_ERROR = 500;

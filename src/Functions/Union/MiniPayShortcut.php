@@ -10,7 +10,6 @@ use UnionPay\Api\Core\BaseClient;
  */
 class MiniPayShortcut extends BaseClient
 {
-    public string $service = 'unified-order';
 
     /**
      * @return void

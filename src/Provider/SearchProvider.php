@@ -21,10 +21,10 @@ class SearchProvider implements Provider
     public function serviceProvider(Container $container): void
     {
         $container['search'] = function ($container) {
-            return new OrderDetail($container, '/v1/netpay/query');
+            return new OrderDetail($container, '/query');
         };
         $container['refund'] = function ($container) {
-            return new OrderRefund($container, '/v1/netpay/refund');
+            return new OrderRefund($container, '/refund');
         };
     }
 }

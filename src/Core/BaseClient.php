@@ -40,8 +40,6 @@ abstract class BaseClient
         $this->service = $service;
         // 设置公共参数
         $app->baseParams['msgId'] = uniqid();
-        date_default_timezone_set('Asia/Shanghai');
-        $this->app->baseParams['requestTimestamp'] = date('Y-m-d H:i:s');
     }
 
     /**

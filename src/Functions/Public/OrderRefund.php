@@ -16,7 +16,7 @@ class OrderRefund extends BaseClient
 
     protected function setParams(): void
     {
-        // ......
+        $this->app->baseParams['instMid'] = "MINIDEFAULT";
     }
 
     /**
@@ -27,6 +27,7 @@ class OrderRefund extends BaseClient
      */
     public function refund(array $params): array
     {
+        $this->setParams();
         return $this->curlRequest($params, 'post');
     }
 }

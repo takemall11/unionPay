@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace UnionPay\Api\Functions\Public;
 
 use GuzzleHttp\Exception\GuzzleException;

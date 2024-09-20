@@ -2,31 +2,35 @@
 
 declare(strict_types=1);
 
-namespace UnionPay\Api\Functions\Public;
+namespace UnionPay\Api\Functions\Union;
 
 use GuzzleHttp\Exception\GuzzleException;
 use UnionPay\Api\Core\BaseClient;
 
 /**
- * 关闭模块
+ * 订单模块
  */
-class OrderClose extends BaseClient
+class CloudMiniPayShortcut extends BaseClient
 {
-    public string $service = 'close';
-
+    /**
+     * @return void
+     */
     protected function setParams(): void
     {
-        // ......
+        $this->app->baseParams['tradeType'] = "UP_WX_MINI";
+        $this->app->baseParams['instMid'] = "MINIDEFAULT";
     }
 
     /**
-     * 统一关闭订单
+     * 创建订单
      * @param array $params
      * @return array
      * @throws GuzzleException
      */
-    public function closeOrder(array $params): array
+    public function createOrder(array $params): array
     {
         return $this->curlRequest($params, 'post');
     }
+
+
 }

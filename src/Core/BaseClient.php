@@ -1,13 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace UnionPay\Api\Core;
 
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use UnionPay\Api\Constants\UnionErrorCode;
 use UnionPay\Api\Exception\PayException;
 use UnionPay\Api\Tools\Guzzle;
 use UnionPay\Api\Tools\Sign;
+
 use function Hyperf\Support\make;
 use function Hyperf\Config\config;
 
@@ -61,12 +65,12 @@ abstract class BaseClient
             ## 合并公共参数
             $data = array_merge($data, $this->app->baseParams);
             ## 开始请求
-            $client = $this->getInstance(['Authorization' => $this->getSign($data), 'Content-Length' => strlen(json_encode($data))]);
+            $client = $this->getInstance(['Authorization' => $this->getSign($data), 'Content-Length' => strlen(json_encode($data, JSON_UNESCAPED_UNICODE))]);
             ## 发送请求
             $method = 'send' . ucfirst($method);
             ## 获取返回结果
             return $client->$method($this->url . $this->service, $data);
-        }catch (RequestException $e){
+        } catch (RequestException|ClientException $e) {
             // 请求失败
             logger('unionpay')->error('UnionPay Request Error', [
                 'url' => $this->host . $this->url . $this->service,

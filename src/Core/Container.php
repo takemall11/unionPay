@@ -1,7 +1,8 @@
 <?php
 
-namespace UnionPay\Api\Core;
+declare(strict_types=1);
 
+namespace UnionPay\Api\Core;
 
 /**
  * Class Container

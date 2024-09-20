@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace UnionPay\Api\Tools;
 
 use Hyperf\Codec\Json;
+
 use function Hyperf\Config\config;
 use function Hyperf\Support\make;
 
 trait Sign
 {
-
     /**
      * @param array $body
      * @return string
@@ -19,7 +21,7 @@ trait Sign
         $appId = $this->app->appId;
         $appKey = $this->app->appKey;
         $timestamp = date("YmdHis", time());
-        $nonce = md5(uniqid(microtime(true), true));
+        $nonce = md5(uniqid((string) microtime(true), true));
         $str = bin2hex(hash('sha256', $body, true));
         $signature = base64_encode(hash_hmac('sha256', "$appId$timestamp$nonce$str", $appKey, true));
         return "OPEN-BODY-SIG AppId=\"$appId\", Timestamp=\"$timestamp\", Nonce=\"$nonce\", Signature=\"$signature\"";

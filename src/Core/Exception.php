@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace UnionPay\Api\Core;
 
 /**
@@ -7,5 +10,4 @@ namespace UnionPay\Api\Core;
  */
 class Exception extends \Exception
 {
-
 }

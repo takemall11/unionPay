@@ -18,7 +18,6 @@ use Hyperf\Constants\Annotation\Constants;
 #[Constants]
 class UnionErrorCode extends AbstractConstants
 {
-
     public const SERVER_ERROR = 500;
 
 

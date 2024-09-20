@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace UnionPay\Api;
 
 use UnionPay\Api\Core\ContainerBase;
@@ -6,11 +9,10 @@ use UnionPay\Api\Provider\UnionPayProvider;
 use UnionPay\Api\Provider\SearchProvider;
 
 /**
- * Class Application
+ * Class UnionPay
  */
 class UnionPay extends ContainerBase
 {
-
     /**
      * 服务提供者
      * @var array

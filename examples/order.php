@@ -9,7 +9,6 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use UnionPay\Api\UnionPay;
-use function Hyperf\Support\make;
 
 date_default_timezone_set('PRC');
 
@@ -24,21 +23,36 @@ $param = [
     "merOrderId" => '38HA' . time(),
     "attachedData"=>"",
     "totalAmount" => 100,
-    "notifyUrl"=>"http://www.test.com/notify",
+    "goods" => json_encode(
+        [
+            "goodsId"=>"001",
+            "goodsName"=>"鸡蛋",
+            "quantity"=>"10",
+            "price"=>"1",
+            "goodsCategory"=>"food meterial",
+            "body"=>"two eggs",
+            "unit"=>"个",
+            "discount"=>"5",
+            "subMerchantId"=>"",
+            "merOrderId"=>"dd20220419111222",
+            "subOrderAmount"=>"200"
+        ]
+    ),
+    "notifyUrl"=>"https://www.test.com/notify",
     "subAppId"=>"wx014ad2ef80a147a7",
     "subOpenId"=>"oLLD10OE0bZiUE_UUola5ecJPDLI",
-    "tradeType"=>"MINI",
 ];
 
-/** @var UnionPay $payClient */
-$payClient = make(UnionPay::class, [['mid' => $mchId]]);
+$payClient = new UnionPay(['mid' => $mchId]);
 ## 初始化配置
 $payClient->setAppId($appId);
 $payClient->setAppKey($appSecret);
 
 
-// 下单
-$response = $payClient->wechatMini->createOrder($param);
+// 普通小程序下单
+// $response = $payClient->wechatMini->createOrder($param);
+// 云闪付小程序下单
+$response = $payClient->uacMini->createOrder($param);
 
 //订单详情
 $param = [

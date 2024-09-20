@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace UnionPay\Api\Tools;
 
 use GuzzleHttp\Client;
@@ -17,6 +19,7 @@ class Guzzle
     private Client $client;
 
     protected array $headers = [
+        'Accept' => 'application/json',
         'Content-Type' => 'application/json',
     ];
 
@@ -53,7 +56,7 @@ class Guzzle
      */
     public function sendPost(string $url, array $params): array
     {
-         logger('unionpay')->info('UnionPay POST', ['url' => $url, 'params' => $params]);
+        logger('unionpay')->info('UnionPay POST', ['url' => $url, 'params' => $params]);
 
         $result = $this->client->post($url, ['json' => $params]);
 
@@ -73,7 +76,7 @@ class Guzzle
         $result = Json::decode($result);
 
         if (!is_array($result)) {
-            throw new PayException(UnionErrorCode::SERVER_ERROR,'UnionPay response error');
+            throw new PayException(UnionErrorCode::SERVER_ERROR, 'UnionPay response error');
         }
 
         return $result;

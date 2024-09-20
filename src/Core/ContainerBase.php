@@ -1,7 +1,8 @@
 <?php
 
-namespace UnionPay\Api\Core;
+declare(strict_types=1);
 
+namespace UnionPay\Api\Core;
 
 /**
  * Class ContainerBase
@@ -29,7 +30,7 @@ class ContainerBase extends Container
         }
 
         $providerCallback = function ($provider) {
-            $obj = new $provider;
+            $obj = new $provider();
             $this->serviceRegister($obj);
         };
 

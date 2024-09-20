@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace UnionPay\Api\Provider;
 
 use UnionPay\Api\Core\Container;
@@ -13,7 +15,6 @@ use UnionPay\Api\Interfaces\Provider;
  */
 class SearchProvider implements Provider
 {
-
     /**
      * 服务提供者
      * @param Container $container

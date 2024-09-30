@@ -62,6 +62,7 @@ abstract class BaseClient
     public function curlRequest(array $data, string $method = 'get'): array
     {
         try {
+            $this->setParams();
             ## 合并公共参数
             $data = array_merge($data, $this->app->baseParams);
             ## 开始请求

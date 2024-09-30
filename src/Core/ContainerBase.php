@@ -1,31 +1,40 @@
 <?php
 
 declare(strict_types=1);
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
 
 namespace UnionPay\Api\Core;
 
 /**
- * Class ContainerBase
- * @package UnionPay\Api\Core
+ * Class ContainerBase.
  */
 class ContainerBase extends Container
 {
-    protected array $provider = [];
     public string $mchId = '';
+
     public string $appId = '';
+
     public string $appKey = '';
 
     public string $service = '';
-    public array $baseParams = [
-        'tid' => 'CDWXWM49',
-    ];
+
+    public array $baseParams = [];
+
+    protected array $provider = [];
 
     /**
      * ContainerBase constructor.
      */
     public function __construct(array $params = [])
     {
-        if (!empty($params)) {
+        if (! empty($params)) {
             $this->baseParams = array_merge($this->baseParams, $params);
         }
 
@@ -34,11 +43,10 @@ class ContainerBase extends Container
             $this->serviceRegister($obj);
         };
 
-        array_walk($this->provider, $providerCallback);//注册
+        array_walk($this->provider, $providerCallback); // 注册
     }
 
     /**
-     * @param $id
      * @return mixed
      */
     public function __get($id)
@@ -47,7 +55,6 @@ class ContainerBase extends Container
     }
 
     /**
-     * @param string $mchId
      * @return ContainerBase
      */
     public function setMchId(string $mchId): static
@@ -57,7 +64,6 @@ class ContainerBase extends Container
     }
 
     /**
-     * @param string $appId
      * @return ContainerBase
      */
     public function setAppId(string $appId): static
@@ -67,7 +73,6 @@ class ContainerBase extends Container
     }
 
     /**
-     * @param string $appKey
      * @return ContainerBase
      */
     public function setAppKey(string $appKey): static
@@ -75,6 +80,4 @@ class ContainerBase extends Container
         $this->appKey = $appKey;
         return $this;
     }
-
-
 }

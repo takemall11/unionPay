@@ -28,8 +28,6 @@ abstract class BaseClient
     protected Container $app;
     // 请求地址
     public string $host = 'https://api-mop.chinaums.com';
-    // 测试地址
-    public string $testHost = 'https://test-api-open.chinaums.com';
     // 请求路径
     public string $url = '/v1/netpay';
     // 服务名称
@@ -46,7 +44,6 @@ abstract class BaseClient
         $this->service = $service;
         // 设置公共参数
         $app->baseParams['msgId'] = uniqid();
-        $this->host = config('pay.unionpay.env') === 'prod' ? $this->host : $this->testHost;
     }
 
     /**

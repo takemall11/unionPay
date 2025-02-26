@@ -46,7 +46,7 @@ abstract class BaseClient
         $this->service = $service;
         // 设置公共参数
         $app->baseParams['msgId'] = uniqid();
-        $this->host = config('unionpay.env') === 'prod' ? $this->host : $this->testHost;
+        $this->host = config('pay.unionpay.env') === 'prod' ? $this->host : $this->testHost;
     }
 
     /**

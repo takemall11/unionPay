@@ -24,6 +24,9 @@ class SearchProvider implements Provider
         $container['search'] = function ($container) {
             return new OrderDetail($container, '/query');
         };
+        $container['refund_search'] = function ($container) {
+            return new OrderDetail($container, '/refund-query');
+        };
         $container['refund'] = function ($container) {
             return new OrderRefund($container, '/refund');
         };

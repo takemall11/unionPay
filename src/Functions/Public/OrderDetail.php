@@ -13,8 +13,6 @@ use UnionPay\Api\Core\Container;
  */
 class OrderDetail extends BaseClient
 {
-    public string $service = 'query';
-
 
     protected function setParams(): void
     {
@@ -29,6 +27,17 @@ class OrderDetail extends BaseClient
      * @throws GuzzleException
      */
     public function getInfo(array $params): array
+    {
+        return $this->curlRequest($params, 'post');
+    }
+
+    /**
+     * 退款查询
+     * @param array $params
+     * @return array
+     * @throws GuzzleException
+     */
+    public function getRefundInfo(array $params): array
     {
         return $this->curlRequest($params, 'post');
     }

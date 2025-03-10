@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace UnionPay\Api\Tools;
 
-use Hyperf\Codec\Json;
-
 use function Hyperf\Config\config;
-use function Hyperf\Support\make;
 
 trait Sign
 {
@@ -17,7 +14,7 @@ trait Sign
      */
     public function getSign(array $body): string
     {
-        $body = Json::encode($body);
+        $body = json_encode($body);
         $appId = $this->app->appId;
         $appKey = $this->app->appKey;
         $timestamp = date("YmdHis", time());

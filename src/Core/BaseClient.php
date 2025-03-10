@@ -66,7 +66,7 @@ abstract class BaseClient
             ## 合并公共参数
             $data = array_merge($data, $this->app->baseParams);
             ## 开始请求
-            $client = $this->getInstance(['Authorization' => $this->getSign($data), 'Content-Length' => strlen(json_encode($data, JSON_UNESCAPED_UNICODE))]);
+            $client = $this->getInstance(['Authorization' => $this->getSign($data), 'Content-Length' => strlen(json_encode($data))]);
             ## 发送请求
             $method = 'send' . ucfirst($method);
             ## 获取返回结果

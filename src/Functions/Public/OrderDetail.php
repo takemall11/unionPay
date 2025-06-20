@@ -13,7 +13,6 @@ use UnionPay\Api\Core\Container;
  */
 class OrderDetail extends BaseClient
 {
-
     protected function setParams(): void
     {
         // ......

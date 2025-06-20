@@ -13,7 +13,8 @@
     "ext-simplexml": "*",
     "spatie/array-to-xml": "^3.2",
     "mtownsend/xml-to-array": "^2.0",
-    "ext-curl": "*"
+    "ext-curl": "*",
+    "ext-openssl": "*"
   },
   "support": {
     "email": "yangyang@nahuomall.com",

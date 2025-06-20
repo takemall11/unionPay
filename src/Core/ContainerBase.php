@@ -18,15 +18,14 @@ namespace UnionPay\Api\Core;
 class ContainerBase extends Container
 {
     public string $mchId = '';
-
     public string $appId = '';
-
+    public string $userId = '';
     public string $appKey = '';
-
+    public string $publicKey = '';
+    public string $privateKey = '';
+    public string $serverPublicKey = '';
     public string $service = '';
-
     public array $baseParams = [];
-
     protected array $provider = [];
 
     /**
@@ -75,9 +74,48 @@ class ContainerBase extends Container
     /**
      * @return ContainerBase
      */
+    public function setUserId(string $userId): static
+    {
+        $this->userId = $userId;
+        return $this;
+    }
+
+    /**
+     * @return ContainerBase
+     */
     public function setAppKey(string $appKey): static
     {
         $this->appKey = $appKey;
+        return $this;
+    }
+
+    /**
+     * @param string $appKey
+     * @return ContainerBase
+     */
+    public function setPublicKey(string $appKey): static
+    {
+        $this->publicKey = $appKey;
+        return $this;
+    }
+
+    /**
+     * @param string $appKey
+     * @return ContainerBase
+     */
+    public function setPrivateKey(string $appKey): static
+    {
+        $this->privateKey = $appKey;
+        return $this;
+    }
+
+    /**
+     * @param string $appKey
+     * @return ContainerBase
+     */
+    public function setServerPublicKey(string $appKey): static
+    {
+        $this->serverPublicKey = $appKey;
         return $this;
     }
 }

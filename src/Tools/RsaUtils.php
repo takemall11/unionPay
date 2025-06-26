@@ -4,12 +4,28 @@ declare(strict_types=1);
 
 namespace UnionPay\Api\Tools;
 
+use Exception;
+
 trait RsaUtils
 {
     private string $publicKey = '';
     private string $privateKey = '';
     private string $serverPublicKey = '';
 
+    public function setPublicKey($key)
+    {
+        $this->publicKey = "-----BEGIN PUBLIC KEY-----\n" . wordwrap($key, 64, "\n", true) . "\n-----END PUBLIC KEY-----";
+    }
+
+    public function setServerPublicKey($key)
+    {
+        $this->serverPublicKey = "-----BEGIN PUBLIC KEY-----\n" . wordwrap($key, 64, "\n", true) . "\n-----END PUBLIC KEY-----";
+    }
+
+    public function setPrivateKey($key)
+    {
+        $this->privateKey = "-----BEGIN PRIVATE KEY-----\n" . wordwrap($key, 64, "\n", true) . "\n-----END PRIVATE KEY-----";
+    }
 
     /**
      * RSA 加密 (使用公钥)
@@ -19,28 +35,28 @@ trait RsaUtils
      */
     public function encryptByPublicKey(string $data): string
     {
-        $publicKey = "-----BEGIN PUBLIC KEY-----\n" .
-            chunk_split($this->serverPublicKey, 64, "\n") .
-            "-----END PUBLIC KEY-----\n";
-
-        // 获取密钥位数（如 2048）
-        $keyDetails = openssl_pkey_get_details(openssl_pkey_get_public($publicKey));
-        var_dump($keyDetails);
-        $keySizeBits = $keyDetails['bits'];
-        $maxLength = ($keySizeBits / 8) - 11; // PKCS1 填充预留 11 字节
-
-        $encryptedData = '';
+        $pubKey = openssl_pkey_get_public($this->serverPublicKey);
+        $result = '';
+        $dataLen = strlen($data);
         $offset = 0;
+        $data = mb_convert_encoding($data, 'UTF-8'); // 强制UTF-8编码
 
-        // 分段加密
-        while ($offset < strlen($data)) {
-            $input = substr($data, $offset, $maxLength);
-            openssl_public_encrypt($input, $encrypted, $publicKey, OPENSSL_PKCS1_OAEP_PADDING);
-            $encryptedData .= $encrypted;
-            $offset += $maxLength;
+        while ($offset < $dataLen) {
+            // 取出当前块
+            $chunk = substr($data, $offset, 245);
+
+            $encryptedChunk = '';
+
+            // 执行加密
+            if (!openssl_public_encrypt($chunk, $encryptedChunk, $pubKey, OPENSSL_PKCS1_PADDING)) {
+                throw new Exception("RSA 加密失败: " . openssl_error_string());
+            }
+
+            $result .= $encryptedChunk;
+            $offset += 245;
         }
 
-        return base64_encode($encryptedData);
+        return base64_encode($result);
     }
 
     /**
@@ -49,15 +65,30 @@ trait RsaUtils
      * @param string $data Base64编码的加密数据
      * @return string 解密后的原始数据
      */
-    public function decryptByPrivateKey(string $data): string
+    public function decryptByPrivateKey(string $data): array
     {
-        $privateKey = "-----BEGIN PRIVATE KEY-----\n" .
-            chunk_split($this->privateKey, 64, "\n") .
-            "-----END PRIVATE KEY-----\n";
+        $privKey = openssl_pkey_get_private($this->privateKey);
+        if (!$privKey) {
+            throw new Exception("加载私钥失败: ".openssl_error_string());
+        }
+        $rawData = base64_decode($data);
+        if ($rawData === false) {
+            throw new Exception("Base64解码失败");
+        }
+        $result = '';
+        $dataLength = strlen($rawData);
 
-        $data = base64_decode($data);
-        openssl_private_decrypt($data, $decrypted, $privateKey, OPENSSL_PKCS1_OAEP_PADDING);
-        return $decrypted;
+        for ($offset = 0; $offset < $dataLength; $offset += 265) {
+            $chunk = substr($rawData, $offset, 265);
+            if (!openssl_private_decrypt($chunk, $decrypted, $privKey)) {
+                throw new Exception("分段解密失败: ".openssl_error_string());
+            }
+            $result .= $decrypted;
+        }
+
+        $result = json_decode($result, true);
+
+        return is_array($result) ? $result : [];
     }
 
     /**
@@ -68,11 +99,8 @@ trait RsaUtils
      */
     public function sign(string $data): string
     {
-        $privateKey = "-----BEGIN PRIVATE KEY-----\n" .
-            chunk_split($this->privateKey, 64, "\n") .
-            "-----END PRIVATE KEY-----\n";
-
-        openssl_sign($data, $signature, $privateKey, OPENSSL_ALGO_SHA256);
+        $privKey = openssl_pkey_get_private($this->privateKey);
+        openssl_sign($data, $signature, $privKey, OPENSSL_ALGO_SHA256);
         return base64_encode($signature);
     }
 
@@ -83,13 +111,9 @@ trait RsaUtils
      * @param string $sign Base64编码的签名
      * @return bool 是否验证通过
      */
-    public function verifySign(string $data,string $sign): bool
+    public function verifySign(string $data, string $sign): bool
     {
-        $publicKey = "-----BEGIN PUBLIC KEY-----\n" .
-            chunk_split($this->serverPublicKey, 64, "\n") .
-            "-----END PUBLIC KEY-----\n";
-
-        $sign = base64_decode($sign);
-        return openssl_verify($data, $sign, $publicKey, OPENSSL_ALGO_SHA256) === 1;
+        $pubKey = openssl_pkey_get_public($this->serverPublicKey);
+        return (bool)openssl_verify($data, base64_decode($sign), $pubKey, OPENSSL_ALGO_SHA256);
     }
 }

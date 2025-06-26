@@ -70,4 +70,4 @@ $payClient->setPublicKey($publicKey);
 $payClient->setPrivateKey($privateKey);
 $payClient->setServerPublicKey($serverPublicKey);
 
-$payClient->subsidy->push($param);
+$res = $payClient->subsidy->push($param);

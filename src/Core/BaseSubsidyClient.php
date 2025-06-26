@@ -65,20 +65,25 @@ abstract class BaseSubsidyClient
         try {
             $this->setParams();
             unset($this->app->baseParams['mid']);
+            $this->setPrivateKey($this->privateKey);
+            $this->setServerPublicKey($this->serverPublicKey);
             ## 加密
             $this->app->baseParams['encBizReqData'] = $this->encryptByPublicKey(json_encode($data, JSON_UNESCAPED_UNICODE));
             ## 签名
-            $this->app->baseParams['sign'] = $this->sign($this->app->baseParams['encBizReqData']);
+            $this->app->baseParams['sign'] = $this->sign(base64_decode($this->app->baseParams['encBizReqData']));
             ## 开始请求
             $client = $this->getInstance();
             ## 发送请求
             $method = 'send' . ucfirst($method);
-
-            var_dump($this->app->baseParams);
             ## 获取返回结果
-            return $client->$method($this->url . $this->service, $this->app->baseParams);
+            $res = $client->$method($this->url . $this->service, $this->app->baseParams);
+            if (! empty($res['code']) && $res['code'] == '00000') {
+                return $this->decryptByPrivateKey($res['encBizRespData']);
+            } else {
+                throw new PayException(UnionErrorCode::SERVER_ERROR, $res['msg']);
+            }
         } catch (RequestException|ClientException $e) {
-            throw new PayException(UnionErrorCode::SERVER_ERROR, '支付服务访问失败');
+            throw new PayException(UnionErrorCode::SERVER_ERROR, '支付服务访问失败:' . $e->getMessage());
         }
     }
 

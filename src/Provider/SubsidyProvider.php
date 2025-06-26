@@ -9,6 +9,7 @@ use UnionPay\Api\Functions\Union\CloudMiniPayShortcut;
 use UnionPay\Api\Functions\Union\MiniPayShortcut;
 use UnionPay\Api\Functions\Union\SubsidyShortcut;
 use UnionPay\Api\Interfaces\Provider;
+use function Hyperf\Support\env;
 
 /**
  * Class SubsidyProvider
@@ -22,8 +23,9 @@ class SubsidyProvider implements Provider
      */
     public function serviceProvider(Container $container): void
     {
-        $container['subsidy'] = function ($container) {
-            return new SubsidyShortcut($container, '/gdhlg');
+        $env = env('APP_ENV', 'dev');
+        $container['subsidy'] = function ($container) use ($env) {
+            return new SubsidyShortcut($container, $env === 'prod' ? '/benefits/web-api/gdhlg' : '/gdhlg');
         };
     }
 }

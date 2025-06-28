@@ -14,7 +14,7 @@ trait Sign
      */
     public function getSign(array $body): string
     {
-        $body = json_encode($body, JSON_UNESCAPED_UNICODE);
+        $body = json_encode($body);
         $appId = $this->app->appId;
         $appKey = $this->app->appKey;
         $timestamp = date("YmdHis", time());

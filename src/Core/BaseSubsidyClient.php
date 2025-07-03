@@ -12,6 +12,7 @@ use UnionPay\Api\Exception\PayException;
 use UnionPay\Api\Tools\Guzzle;
 use UnionPay\Api\Tools\RsaUtils;
 
+use function Hyperf\Support\env;
 use function Hyperf\Support\make;
 use function Hyperf\Config\config;
 
@@ -27,9 +28,9 @@ abstract class BaseSubsidyClient
     // 基础参数
     protected ContainerBase $app;
     // 请求地址
-    public string $host = 'https://mgw-test.gnete.com';
+    public string $host = 'https://benefits.chinaums.com';
     // 请求路径
-    public string $url = '/gdhlg';
+    public string $url = '/benefits/web-api/gdlg';
     // 服务名称
     public string $service = '';
 

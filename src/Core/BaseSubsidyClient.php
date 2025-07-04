@@ -30,7 +30,7 @@ abstract class BaseSubsidyClient
     // 请求地址
     public string $host = 'https://benefits.chinaums.com';
     // 请求路径
-    public string $url = '/benefits/web-api/gdlg';
+    public string $url = '/benefits/web-api/gdhlg';
     // 服务名称
     public string $service = '';
 

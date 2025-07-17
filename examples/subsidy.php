@@ -1,73 +1,206 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: stbz
- * Date: 2020/6/17
- * Time: 4:00 PM
- */
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
-use UnionPay\Api\UnionPay;
-
-date_default_timezone_set('PRC');
-
-
+$userId = '';
 // 客户端公钥
-$publicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAv1BgR/byFgE9EjCtLINVkdyDWgJPbKYrgWH/Taz+U8tmy/oGfHT+8XOGhMLRTDeso+mDw4siUoAaraFGRkkHm6TYISNkkGdr+B8cbaTPr339fsYXwp/LqkZNGtzFAHBoVyJ9AP4sz+PLhJGlTIgyVZYdOo5+E0DBMi91oj6nujxPc2xKzakfW/RrgwmG0osHLkbXaL5yeNWQfz0me2PR3KhqOhaHTN3br2lMiwk786+nLeqKAYoSSAHkQTXs5d2Ui8udifDs2/J31MPROtGcpBKIfKQNQisL9s3bVJFcIDeOIDVJFqSbmZLp501uv5mcuh0cWeRjA33lHGPJCbUCtQIDAQAB";
-
+$publicKey = "";
 // 客户端私钥
-$privateKey = "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC5cQH/IGaHJkohfXz6dcR1qwN7b/QBbcdHlvJOvzRHN4gvU34GiWGrVxUynpWC06cv/tPwxc2DakXyvK+8H5AcS30obO+lDSZMghn1U4wp2X7SBRG5L3D1KQtAaMTVEUMey+jVKklmM6LHRuGeDQgIyanB/E2P6MAU+Fhu4J5vZAwjOZOv+HT2wnanaMagmYtHMMDxRcc/WybKQToAz/6KEkSjKtiwL3yKyApD7IsreR9UVn72C7W/D4Kdqy/q0X/Oib+ffpkSnYX2+zc5w7ZuyrXnILmdXj+TBYrtQYzH48CT/Ng2JXOnEZnD4OrOCupDv3UEJpTUFEJ4XXyLO92TAgMBAAECggEBAJdZzahd2HB75ssYsZV14weqsSfhAsTbxWb/ovp0ggWSJFuECHrrS8TdSVbMKfjiKDU7Bd4ggxC7/yUTrVacaDE/x4HkD1+lsNmG4grhyqcpdaGSM5nyR35ApodGO0gvU5niEUFRxyBcCoIcru4hcqpBdYT3GJLZA1TaMMsmFwmPuT/HBmVXQWSYcDYkc/wp2qwbeSAtmbmNWdwDrqVA2uXQA1xm1n+4DJTIOGH6Q1YIFCHZ0jL3IkyZDWaLmhVWOr88VGCE6Yajp43PqIQn+zJqAxrpud7UNe6GXdowrwZTY23tJia/Sw4op2AtBQtZ6suaU3qt7mNHPm5Jq616LPkCgYEA5p6ycfjDVSHJ7zgw/0GepheR0OVwgm5o25J2BNwyRF2KrM0oVPQveENOwtb2Iihy+HXM96DqAnmTswWxlMrAylwK3eFnuUr0qQkCCwAPwRAX3ElQ+/UtAHqU7zZWJrcTEtmTC2bGeQTqhqwdIm/zqslXXjFvhSTZVuA34MVYjQcCgYEAzdl8+Fpf4k7mig3t1rsxexDHarRMQnN/tGdRBF5wRM//OVHHySJKDh/3TJf2QWucdgy6OLL3CBON2D046GQnleomnDAYk+eCgb+ppYEadshElQwe6Fm8DVTi0f66AERKrjXGdkY5pOdjhQP6OQT0ucI9U1jjtbc3C4T2yXM+VBUCgYEA5SfyBr/6UIB3qGW8ghdRLpcjBGDIMELHnM7myKOIq1gLsPNWzTuqY6T2ATMadgydWXesiK7zeCwYcH4K29+wPCPDhIAy0fLCM6jIx+dywBNesjyD5SjVY7FqhlwGtQebQ1LBA0ZHlv8kj1c8x/hYNm9EikszFijscZ/wxj8yY0cCgYAXqTEZJuIwlBshsTouXXPxjlsto63EUZxTMzD3zJchAbt3bjQFpYBXoUr+rdTrbiAc3ZemHsQQVJcQTPE2nRSDwddQSqL4lTrGCS7JzE4raxee/jarRG0+JwyvUJU2pKLk5V97htTnZIVm668eULiEhZQg+W2rHHUiSNVJEIsQhQKBgGFj5mIlEvnmF7cNDEPtqU6zMAARPmkWK1ilcT0azBsoJrtX06luJSZlSQ7eydnUvyWvDmQXFbuY+sloMoIGwDs+RMD6f0FsU346x0Otapj7oQvC51sb/fptTyZf2bAhX7KI6umnOp57TOOTZ/dFyFN7oqNaRe0MDM0BjbJD/gjP";
-
+$privateKey = "";
 // 服务端公钥
-$serverPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjnAe+PaRY8/mndT+Qp+ivL4iTnvZdu0x9YsvlFLmAuwE3tYdRnMeVD1aVXPfV68/tYgYyGmjgGNWomDuvnnE7c/Xzl3R+tp4Q/W8c6/WkCID0PBstyVqZugJ9T6gktDIUYG+VfIOgZgNVUpVY91Iwwo+1uH8KPuWSmN/jZMDPRmc39edIYmQemi39n4mPpcCwcHGWLgewDMxAiQbg28pE7aZeBbWs8sNtIdME0g+uhW67AAjSRUakJphlo6h8anVuZK5zNE/swBOt4JcBk/rUByxFDKRwBXpAf9/QHEYHWBxt6DkZ8wUcw9Iluwa+DxZ9yXMPsYHrBPiRWUBBhgbzQIDAQAB";
+$serverPublicKey = "";
 
-// 用户 ID
-$userId = "NHYX";
+class RSAUtils
+{
+    /**
+     * RSA最大加密明文大小
+     */
+    private const MAX_ENCRYPT_BLOCK = 245;
 
-// 国补推送接口
-$param = [
-    'traceId' => date('YmdHis') . substr(microtime(), 2, 3) . uniqid(),
-    'activeBigClass' => '3C',
-    'provinceCode' => '44',
-    'cityCode' => '4401',
-    'districtCode' => '440101',
-    'address' => 'wherever',
-    'idCardFrontPicKey' => 'khl20240505153417428.png',
-    'idCardBackPicKey' => 'khl20240505153417428.png',
-    'newElecAppCnt' => '1',
-    'brand' => '品牌',
-    'newEei' => 'L1',
-    'newElecAppBrandAndModel' => '品牌型号',
-    'newElectSn' => 'sn666',
-    'imei1' => '11',
-    'imei2' => '22',
-    'transDate' => '20250218',
-    'newCelecAppInvPicKey' => 'khl20240505153417428.png',
-    'newInvNo' => '666',
-    'newInvCode' => '777',
-    'invoiceIssueDate' => '2025-02-19',
-    'newTotalPrice' => '1.00',
-    'newTotalPriceExcTax' => '2.00',
-    'salesCompName' => '61',
-    'salesCompCode' => '71',
-    'newElecAppPicKey' => 'khl20240505204345705.png',
-    'extendField1Key' => 'khl20240505153417428.png',
-    'extendField2Key' => 'khl20240505153417428.png',
-    'constructionRegistPicKey' => 'khl20240505153417428.png',
-    'newOtherFile1Key' => 'khl20240505153417428.png',
-    'newOtherFile2Key' => 'khl20240505153417428.png',
-    'newOtherFile3Key' => 'khl20240505204345705.png',
-    'newOtherFile4Key' => 'khl20240505204345705.png',
-    'remark' => '备注',
-    'clientIp' => '192.168.1.1',
-];
+    /**
+     * RSA最大解密密文大小
+     */
+    private const MAX_DECRYPT_BLOCK = 256;
 
-$payClient = new UnionPay();
-## 初始化配置
-$payClient->setUserId($userId);
-$payClient->setPublicKey($publicKey);
-$payClient->setPrivateKey($privateKey);
-$payClient->setServerPublicKey($serverPublicKey);
+    /**
+     * 后端RSA的密钥对(公钥和私钥)
+     */
+    private $privateKey;
+    private $publicKey;
+    private $serverPublicKey;
 
-$res = $payClient->subsidy->push($param);
+    public function __construct($privateKey, $publicKey, $serverPublicKey)
+    {
+        $this->privateKey = $this->formatPrivateKey($privateKey);
+        $this->publicKey = $this->formatPublicKey($publicKey);
+        $this->serverPublicKey = $this->formatPublicKey($serverPublicKey);
+    }
+
+    /**
+     * 格式化私钥
+     */
+    private function formatPrivateKey($privateKey)
+    {
+        $pem = "-----BEGIN PRIVATE KEY-----\n";
+        $pem .= chunk_split($privateKey, 64, "\n");
+        $pem .= "-----END PRIVATE KEY-----";
+        return $pem;
+    }
+
+    /**
+     * 格式化公钥
+     */
+    private function formatPublicKey($publicKey)
+    {
+        $pem = "-----BEGIN PUBLIC KEY-----\n";
+        $pem .= chunk_split($publicKey, 64, "\n");
+        $pem .= "-----END PUBLIC KEY-----";
+        return $pem;
+    }
+
+    /**
+     * RSA 加密 (使用公钥)
+     *
+     * @param string $data 要加密的数据
+     * @return string Base64编码的加密结果
+     * @throws Exception
+     */
+    public function encryptByPublicKey(string $data): string
+    {
+        $pubKey = openssl_pkey_get_public($this->serverPublicKey);
+        $result = '';
+        $dataLen = strlen($data);
+        $offset = 0;
+        $data = mb_convert_encoding($data, 'UTF-8'); // 强制UTF-8编码
+
+        while ($offset < $dataLen) {
+            // 取出当前块
+            $chunk = substr($data, $offset, self::MAX_ENCRYPT_BLOCK);
+
+            $encryptedChunk = '';
+
+            // 执行加密
+            if (!openssl_public_encrypt($chunk, $encryptedChunk, $pubKey)) {
+                throw new Exception("RSA 加密失败: " . openssl_error_string());
+            }
+
+            $result .= $encryptedChunk;
+            $offset += self::MAX_ENCRYPT_BLOCK;
+        }
+
+        return base64_encode($result);
+    }
+
+    /**
+     * RSA 解密 (使用私钥)
+     *
+     * @param string $data Base64编码的加密数据
+     * @return array 解密后的原始数据
+     * @throws Exception
+     */
+    public function decryptByPrivateKey(string $data): array
+    {
+        $privKey = openssl_pkey_get_private($this->privateKey);
+        if (!$privKey) {
+            throw new Exception("加载私钥失败: ".openssl_error_string());
+        }
+        $rawData = base64_decode($data);
+        if ($rawData === false) {
+            throw new Exception("Base64解码失败");
+        }
+        $result = '';
+        $dataLength = strlen($rawData);
+
+        for ($offset = 0; $offset < $dataLength; $offset += self::MAX_DECRYPT_BLOCK) {
+            $chunk = substr($rawData, $offset, self::MAX_DECRYPT_BLOCK);
+            if (!openssl_private_decrypt($chunk, $decrypted, $privKey)) {
+                throw new Exception("分段解密失败: ".openssl_error_string());
+            }
+            $result .= $decrypted;
+        }
+
+        $result = json_decode($result, true);
+
+        return is_array($result) ? $result : [];
+    }
+
+    /**
+     * 生成签名
+     *
+     * @param string $data 要签名的数据
+     * @return string Base64编码的签名
+     */
+    public function sign(string $data): string
+    {
+        $privKey = openssl_pkey_get_private($this->privateKey);
+        openssl_sign($data, $signature, $privKey, OPENSSL_ALGO_SHA256);
+        return base64_encode($signature);
+    }
+
+    /**
+     * 验证签名
+     *
+     * @param string $data 原始数据
+     * @param string $sign Base64编码的签名
+     * @return bool 是否验证通过
+     */
+    public function verifySign(string $data, string $sign): bool
+    {
+        $pubKey = openssl_pkey_get_public($this->serverPublicKey);
+        return (bool)openssl_verify($data, base64_decode($sign), $pubKey, OPENSSL_ALGO_SHA256);
+    }
+
+}
+
+// 示例用法
+try {
+    // 实例化工具类
+    $rsa = new RSAUtils($privateKey, $publicKey, $serverPublicKey);
+    // 参数
+    $originalData = json_encode(['traceId' => 'xxxxxxxx']);
+
+    // 公钥加密，私钥解密
+    $encrypted = $rsa->encryptByPublicKey($originalData);
+    echo "加密后: $encrypted\n";
+
+    // 公钥加密，私钥解密
+    $sign = $rsa->sign(base64_decode($encrypted));
+    echo "签名后: $sign\n";
+
+    // 构造基础请求参数
+    $baseReq = [
+        'userId' => $userId,
+        'reqSn' => date('YmdHis') . substr(microtime(), 2, 3) . uniqid(),
+        'timestamp' => date('Y-m-d H:i:s'),
+        'encBizReqData' => $encrypted,
+        'signAlg' => 'SHA256withRSA',
+        'sign' => $sign,
+    ];
+
+
+    // 发起 HTTP POST 请求（使用 curl）
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, "https://mgw-test.gnete.com/gdhlg/o2o/querySubsidyApplTrace");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($baseReq, JSON_UNESCAPED_UNICODE));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json;charset=utf-8']);
+
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    // 解析响应
+    $respJson = json_decode($response, true);
+
+    if (is_array($respJson)) {
+        if ($respJson['code'] == '00000') {
+            // 解析
+            $response = $rsa->decryptByPrivateKey($respJson['encBizRespData']);
+
+            var_dump($response);
+        } else {
+            echo '接口返回失败' . json_encode($respJson, JSON_UNESCAPED_UNICODE);
+        }
+    }
+} catch (Exception $e) {
+    echo "Error: " . $e->getMessage();
+}
+

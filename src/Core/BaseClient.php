@@ -88,7 +88,7 @@ abstract class BaseClient
      * @param int $timeout
      * @return mixed
      */
-    private function getInstance(array $headers = [], int $timeout = 10): Guzzle
+    public function getInstance(array $headers = [], int $timeout = 10): Guzzle
     {
         $params = [
             'base_uri' => $this->host,

@@ -14,9 +14,9 @@ date_default_timezone_set('PRC');
 
 
 // 生产参数
-$mchId = "89844085722AAFR";
-$appId = "8a81c1bd8e804897018ecaf9148501a5";
-$appSecret = "b7d44db036c441ff84c47a1034534e05";
+$mchId = "";
+$appId = "";
+$appSecret = "";
 
 // 下单接口
 $param = [

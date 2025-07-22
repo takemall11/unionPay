@@ -7,13 +7,13 @@ namespace UnionPay\Api;
 use UnionPay\Api\Core\ContainerBase;
 use UnionPay\Api\Functions\Public\OrderDetail;
 use UnionPay\Api\Functions\Public\OrderRefund;
+use UnionPay\Api\Functions\Subsidy\GxSubsidyShortcut;
 use UnionPay\Api\Functions\Union\CloudMiniPayShortcut;
 use UnionPay\Api\Functions\Union\MiniPayShortcut;
 use UnionPay\Api\Functions\Union\SubsidyShortcut;
-use UnionPay\Api\Functions\Union\UnionSubsidyShortcut;
+use UnionPay\Api\Provider\SearchProvider;
 use UnionPay\Api\Provider\SubsidyProvider;
 use UnionPay\Api\Provider\UnionPayProvider;
-use UnionPay\Api\Provider\SearchProvider;
 
 /**
  * Class UnionPay
@@ -27,7 +27,7 @@ use UnionPay\Api\Provider\SearchProvider;
  * @property-read OrderRefund $refund
  * @property-read MiniPayShortcut $wechatMini
  * @property-read CloudMiniPayShortcut $uacMini
- * @property-read UnionSubsidyShortcut $unionSubsidy
+ * @property-read GxSubsidyShortcut $gxSubsidy
  */
 class UnionPay extends ContainerBase
 {

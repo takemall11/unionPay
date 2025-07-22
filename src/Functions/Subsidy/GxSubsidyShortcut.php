@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace UnionPay\Api\Functions\Union;
+namespace UnionPay\Api\Functions\Subsidy;
 
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
@@ -10,13 +10,13 @@ use GuzzleHttp\Exception\RequestException;
 use UnionPay\Api\Constants\UnionErrorCode;
 use UnionPay\Api\Core\BaseClient;
 use UnionPay\Api\Exception\PayException;
-
 use function Hyperf\Support\env;
+use function UnionPay\Api\Functions\Union\logger;
 
 /**
- * 云闪付国补台账模块
+ * 广西云闪付国补台账模块
  */
-class UnionSubsidyShortcut extends BaseClient
+class GxSubsidyShortcut extends BaseClient
 {
     /**
      * @return void
@@ -28,12 +28,34 @@ class UnionSubsidyShortcut extends BaseClient
     }
 
     /**
-     * 台账图片上传
+     * 审核信息上传
      * @param array $params
      * @return array
      * @throws GuzzleException
      */
-    public function uploadImage(array $params): array
+    public function auditUpload(array $params): array
+    {
+        return $this->curlRequest($params, 'post');
+    }
+
+    /**
+     * 审核信息修改
+     * @param array $params
+     * @return array
+     * @throws GuzzleException
+     */
+    public function auditUpdate(array $params): array
+    {
+        return $this->curlRequest($params, 'post');
+    }
+
+    /**
+     * 审核信息修改
+     * @param array $params
+     * @return array
+     * @throws GuzzleException
+     */
+    public function auditQuery(array $params): array
     {
         return $this->curlRequest($params, 'post');
     }

@@ -7,7 +7,6 @@ namespace UnionPay\Api\Provider;
 use UnionPay\Api\Core\Container;
 use UnionPay\Api\Functions\Union\CloudMiniPayShortcut;
 use UnionPay\Api\Functions\Union\MiniPayShortcut;
-use UnionPay\Api\Functions\Union\UnionSubsidyShortcut;
 use UnionPay\Api\Interfaces\Provider;
 
 /**
@@ -27,9 +26,6 @@ class UnionPayProvider implements Provider
         };
         $container['uacMini'] = function ($container) {
             return new CloudMiniPayShortcut($container, '/uac/mini-order');
-        };
-        $container['unionSubsidy'] = function ($container) {
-            return new UnionSubsidyShortcut($container, '/v1/inip/marketing/yjhx/audit-upload');
         };
     }
 }

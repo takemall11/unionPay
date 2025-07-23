@@ -30,7 +30,7 @@ class SubsidyProvider implements Provider
             return new SubsidyShortcut($container, $env === 'prod' ? '/benefits/web-api/gdhlg' : '/gdhlg');
         };
         $container['gxSubsidy'] = function ($container) {
-            return new GxSubsidyShortcut($container, '/v1/inip/marketing/yjhx/audit-upload');
+            return new GxSubsidyShortcut($container, '/v1/inip/marketing/yjhx');
         };
     }
 }

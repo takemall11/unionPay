@@ -35,6 +35,7 @@ class GxSubsidyShortcut extends BaseClient
      */
     public function auditUpload(array $params): array
     {
+        $this->service .= '/audit-upload';
         return $this->curlRequest($params, 'post');
     }
 
@@ -46,6 +47,7 @@ class GxSubsidyShortcut extends BaseClient
      */
     public function auditUpdate(array $params): array
     {
+        $this->service .= '/audit-update';
         return $this->curlRequest($params, 'post');
     }
 
@@ -57,6 +59,7 @@ class GxSubsidyShortcut extends BaseClient
      */
     public function auditQuery(array $params): array
     {
+        $this->service .= '/audit-query';
         return $this->curlRequest($params, 'post');
     }
 

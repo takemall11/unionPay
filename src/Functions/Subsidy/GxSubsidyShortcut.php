@@ -11,7 +11,6 @@ use UnionPay\Api\Constants\UnionErrorCode;
 use UnionPay\Api\Core\BaseClient;
 use UnionPay\Api\Exception\PayException;
 use function Hyperf\Support\env;
-use function UnionPay\Api\Functions\Union\logger;
 
 /**
  * 广西云闪付国补台账模块
@@ -83,7 +82,7 @@ class GxSubsidyShortcut extends BaseClient
             return $client->$method($this->service, $data);
         } catch (RequestException|ClientException $e) {
             // 请求失败
-            logger('unionpay')->error('UnionPay Request Error', [
+            logger()->error('UnionPay Request Error', [
                 'url' => $this->host . $this->url . $this->service,
                 'data' => $data,
                 'error' => $e->getMessage(),

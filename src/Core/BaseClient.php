@@ -73,7 +73,7 @@ abstract class BaseClient
             return $client->$method($this->url . $this->service, $data);
         } catch (RequestException|ClientException $e) {
             // 请求失败
-            logger('unionpay')->error('UnionPay Request Error', [
+            logger()->error('UnionPay Request Error', [
                 'url' => $this->host . $this->url . $this->service,
                 'data' => $data,
                 'error' => $e->getMessage(),

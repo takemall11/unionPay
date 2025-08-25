@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace UnionPay\Api\Provider;
 
 use UnionPay\Api\Core\Container;
+use UnionPay\Api\Functions\Subsidy\FjSubsidyShortcut;
 use UnionPay\Api\Functions\Subsidy\GxSubsidyShortcut;
 use UnionPay\Api\Functions\Union\CloudMiniPayShortcut;
 use UnionPay\Api\Functions\Union\MiniPayShortcut;
@@ -31,6 +32,9 @@ class SubsidyProvider implements Provider
         };
         $container['gxSubsidy'] = function ($container) {
             return new GxSubsidyShortcut($container, '/v1/inip/marketing/yjhx');
+        };
+        $container['fjSubsidy'] = function ($container) {
+            return new FjSubsidyShortcut($container, '/v1/market/subsidy');
         };
     }
 }

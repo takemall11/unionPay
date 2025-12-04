@@ -28,7 +28,7 @@ abstract class BaseSubsidyClient
     // 基础参数
     protected ContainerBase $app;
     // 请求地址
-    public string $host = 'https://benefits.chinaums.com';
+    public string $host = 'https://gd-hlg.chinaums.com';
     // 请求路径
     public string $url = '/benefits/web-api/gdhlg';
     // 服务名称

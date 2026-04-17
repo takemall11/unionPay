@@ -63,12 +63,14 @@ abstract class BaseClient
     {
         try {
             $this->setParams();
+
             ## 合并公共参数
             $data = array_merge($data, $this->app->baseParams);
             ## 开始请求
             $client = $this->getInstance(['Authorization' => $this->getSign($data), 'Content-Length' => strlen(json_encode($data))]);
             ## 发送请求
             $method = 'send' . ucfirst($method);
+
             ## 获取返回结果
             return $client->$method($this->url . $this->service, $data);
         } catch (RequestException|ClientException $e) {
@@ -81,6 +83,38 @@ abstract class BaseClient
             throw new PayException(UnionErrorCode::SERVER_ERROR, '支付服务访问失败');
         }
     }
+
+    /**
+     * curl 请求
+     * @param array $data
+     * @param string $method
+     * @return array
+     * @throws GuzzleException
+     */
+    public function curlQrCodeRequest(array $data, string $method = 'get'): array
+    {
+        try {
+
+            ## 合并公共参数
+            $data = array_merge($data);
+            ## 开始请求
+            $client = $this->getInstance(['Authorization' => $this->getSign($data), 'Content-Length' => strlen(json_encode($data))]);
+            ## 发送请求
+            $method = 'send' . ucfirst($method);
+
+            ## 获取返回结果
+            return $client->$method($this->url . $this->service, $data);
+        } catch (RequestException|ClientException $e) {
+            // 请求失败
+            logger()->error('UnionPay Request Error', [
+                'url' => $this->host . $this->url . $this->service,
+                'data' => $data,
+                'error' => $e->getMessage(),
+            ]);
+            throw new PayException(UnionErrorCode::SERVER_ERROR, '支付服务访问失败');
+        }
+    }
+
 
     /**
      * 获取实例.

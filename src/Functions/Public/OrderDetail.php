@@ -29,7 +29,17 @@ class OrderDetail extends BaseClient
     {
         return $this->curlRequest($params, 'post');
     }
-
+    /**
+     * 统一查询订单
+     * @param array $params
+     * @return array
+     * @throws GuzzleException
+     */
+    public function getQrCodeInfo(array $params): array
+    {
+        $this->url='/v6/poslink/transaction';
+        return $this->curlQrCodeRequest($params, 'post');
+    }
     /**
      * 退款查询
      * @param array $params
@@ -38,6 +48,13 @@ class OrderDetail extends BaseClient
      */
     public function getRefundInfo(array $params): array
     {
+        return $this->curlRequest($params, 'post');
+    }
+    public function getQrCodeRefundInfo(array $params): array
+    {
+        $this->url='/v6/poslink/transaction';
+        $this->service='/query-refund';
+        $this->setParams();
         return $this->curlRequest($params, 'post');
     }
 

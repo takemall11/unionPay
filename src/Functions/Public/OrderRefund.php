@@ -31,4 +31,16 @@ class OrderRefund extends BaseClient
         $this->setParams();
         return $this->curlRequest($params, 'post');
     }
+
+    /**
+     * B扫C支付退款
+     * @param array $params
+     * @return array
+     * @throws GuzzleException
+     */
+    public function qRCodePayRefund(array $params): array
+    {
+        $this->url='/v6/poslink/transaction';
+        return $this->curlQrCodeRequest($params, 'post');
+    }
 }

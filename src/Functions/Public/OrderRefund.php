@@ -41,6 +41,7 @@ class OrderRefund extends BaseClient
     public function qRCodePayRefund(array $params): array
     {
         $this->url='/v6/poslink/transaction';
+        $this->host='https://api-mop-wh.open.chinaums.com';
         return $this->curlQrCodeRequest($params, 'post');
     }
 }

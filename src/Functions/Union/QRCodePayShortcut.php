@@ -32,6 +32,7 @@ class QRCodePayShortcut extends BaseClient
      */
     public function createOrder(array $params): array
     {
+        $this->host='https://api-mop-wh.open.chinaums.com';
         return $this->curlRequest($params, 'post');
     }
 }
